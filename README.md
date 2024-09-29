@@ -31,6 +31,7 @@ The app is built using JS with React and Python FastAPI and uses a SQLite databa
     ```
 4. Install the Python dependencies
     ```bash
+    cd backend
     pip install -r requirements.txt
 
 5. Initialize the database
