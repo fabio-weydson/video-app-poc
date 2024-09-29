@@ -16,10 +16,9 @@ The app is built using JS with React and Python FastAPI and uses a SQLite databa
 
 ### Requirements
 - Node.js
-- Python 3+
-- SQLite
+- Python 3.10+
 
-### Installation
+### Installation and Usage
 
 1. Clone the repository
 2. Install the dependencies
@@ -33,17 +32,21 @@ The app is built using JS with React and Python FastAPI and uses a SQLite databa
 4. Install the Python dependencies
     ```bash
     pip install -r requirements.txt
+
+5. Initialize the database
+    ```bash
+    alembic upgrade head
     ```
-5. Start the backend
+6. Start the backend
     ```bash
     fastapi run
     ```
-6. Open the app in your browser
+7. Open the app in your browser
     ```
     http://localhost:3000
     ```
-7. Open the API documentation
+8. Open the API documentation
     ```
     http://localhost:8000/docs
     ```
-8. Enjoy!
+9. Enjoy!
