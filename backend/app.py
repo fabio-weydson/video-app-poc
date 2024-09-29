@@ -1,8 +1,9 @@
 from fastapi import Depends, FastAPI, Response, status
 from fastapi.responses import RedirectResponse
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
-from typing import List, Union, Optional
+from typing import List, Optional
 
 from .database import SessionLocal
 from .utils import *
@@ -10,6 +11,7 @@ from .utils import *
 from .models import *
 from .schemas import Video, VideoCreate, VideoBase, VideoResponse
 from .repository import VideoRepository
+
 
 def get_db():
     db = SessionLocal()
@@ -25,6 +27,20 @@ app = FastAPI(
     contact={"name": "Fabio Weydson"},
     license_info={"name": "Open Source"}
 )
+
+origins = [
+    "http://localhost",
+    "http://localhost:3000",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 @app.get("/")
 def read_root():
