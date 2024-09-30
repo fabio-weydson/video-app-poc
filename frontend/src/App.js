@@ -3,17 +3,13 @@ import YouTube from 'react-youtube';
 
 import './App.css';
 
-import Header from './components/Header';
-
-import { YoutubeService, ApiService } from './services';
-
+import { ApiService } from './services';
 import { PLAYER_STATE } from './constants';
+import { Header, VideoForm } from './components';
 
 const App = () => {
   const [videos, setVideos] = useState([]);
   const [currentVideo, setCurrentVideo] = useState(null);
-  const [newVideo, setNewVideo] = useState({ title: '', description: '', video_id: '' });
-  const [loading, setLoading] = useState(false);
   const [autoplay, setAutoplay] = useState(1);
 
   useEffect(() => {
@@ -32,52 +28,21 @@ const App = () => {
     return response;
   }, []);
 
-  const handleVideoClick = (video) => {
-    setCurrentVideo(video);
-  };
-
   const handleDeleteVideo = async (videoId) => {
     const confirm = window.confirm('Are you sure you want to delete this video?');
     if (!confirm) return;
     await ApiService.deleteVideo(videoId);
     fetchVideos();
   }
-  
-  const handleInputChange = async ({target}) => {
-    setLoading(true);
 
-    const { name, value } = target;
-
-    if (name === 'video_id') {
-      if (!value.includes('youtube.com')) {
-        setNewVideo({ ...newVideo, [name]: value });
-        setLoading(false);
-        return;
-      }
-
-      const data = await YoutubeService.fetchVideoData(value);
-      if (data) {
-        setNewVideo({ ...newVideo, ...data, video_id: value });
-      }
-      setLoading(false);
-      
-    } else {
-      setNewVideo({ ...newVideo, [name]: value });
-      setLoading(false);
-    }
-  };
-
-  const handleFormSubmit = async (e) => {
-    e.preventDefault();
-    await ApiService.createVideo(newVideo);
+  const handleCreateVideo = async (video) => {
+    await ApiService.createVideo(video);
     fetchVideos();
-    setNewVideo({ title: '', description: '', video_id: '' });
-  };
+  }
 
   const updateVideoTime = async (videoId, moment) => {
     await  ApiService.updateVideo(videoId, { ...currentVideo, moment });
-   }
-  
+  }
 
   const onVideoStateChange = ({target}) => {
     
@@ -103,6 +68,10 @@ const App = () => {
   
     updateVideoTime(currentVideo.id, moment);
   }
+
+  const handleVideoClick = (video) => {
+    setCurrentVideo(video);
+  };
 
   const opts = {
     height: '390',
@@ -130,37 +99,7 @@ const App = () => {
           </div>
         ))}
       </div>
-      <div className="add-video">
-        <form onSubmit={handleFormSubmit}>
-        <input
-            type="text"
-            name="video_id"
-            value={newVideo.video_id}
-            onChange={handleInputChange}
-            placeholder="Video URL. Example: https://www.youtube.com/watch?v=nPM-QSCnNas"
-            required
-          />
-          <input
-            type="text"
-            name="title"
-            placeholder="Title"
-            value={newVideo.title}
-            onChange={handleInputChange}
-            disabled={loading}
-            required
-          />
-          <input
-            type="text"
-            name="description"
-            placeholder="Description"
-            value={newVideo.description}
-            onChange={handleInputChange}
-            disabled={loading}
-            required
-          />
-          <button type="submit">Add Video</button>
-        </form>
-      </div>
+      <VideoForm onCreateVideo={handleCreateVideo} />
     </div>
   );
 };
