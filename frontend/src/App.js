@@ -67,14 +67,22 @@ const App = () => {
   const onVideoStateChange = (e) => {
     const duration = Math.floor(e.target.getDuration());
     const moment = Math.floor(e.target.getCurrentTime())
-    console.log(moment, duration);
+
     if(duration === 0) return;
+
+    // Video ended
     if(moment >= (duration-1)) { 
-      console.log('Video ended');
       updateVideoTime(currentVideo.id, 0);
       setCurrentVideo(videos[videos.indexOf(currentVideo) + 1]);
+
+      // Playlist ended, restart
+      if(videos.indexOf(currentVideo) === videos.length - 1) {
+        updateVideoTime(currentVideo.id, 0);
+        setCurrentVideo(videos[0]);
+      }
       return;
     }
+  
     updateVideoTime(currentVideo.id, moment);
   }
 
@@ -84,6 +92,7 @@ const App = () => {
     playerVars: {
       autoplay: 1,
       start: currentVideo && currentVideo.moment,
+      rel: 0,
     },
   };
 
