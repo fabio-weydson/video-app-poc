@@ -14,6 +14,11 @@ class ApiService {
         return response.data.data;
     }
 
+    async fetchVideo(videoId) {
+        const response = await axios.get(`${this.API_URL}/video/${videoId}`);
+        return response.data.data;
+    }
+
     async updateVideo(videoId, data) {
         return axios.put(`${this.API_URL}/video/${videoId}/`, data);
     }

@@ -52,7 +52,7 @@ def read_videos(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return {"data": videos}
     
 
-@app.get("/videos/{id}", response_model = Optional[VideoResponse])
+@app.get("/video/{id}", response_model = Optional[VideoResponse])
 def read_video(id: int, db: Session = Depends(get_db), response: Response = None):
     video = VideoRepository.get_video(db, id)
 
