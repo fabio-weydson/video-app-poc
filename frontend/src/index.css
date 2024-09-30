@@ -45,16 +45,18 @@ body {
   padding: 10px;
   border-bottom: 1px solid #ccc;
   position: relative;
-  
+  display: flex;
+
   &:hover, &.active {
     background-color: #f9f9f9;
   }
+
   span {
     font-size: 18px;
+    flex: 3; 
   }
+
   button {
-    position: absolute;
-    right: 10px;
     padding: 5px 10px;
     font-size: 13px;
     background-color: chocolate;

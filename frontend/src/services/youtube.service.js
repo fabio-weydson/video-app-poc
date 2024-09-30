@@ -2,14 +2,14 @@ import axios from 'axios';
 
 class YoutubeService {
     async fetchVideoData(videoUrl) {
-        const videoId = await this.fetchVideoId(videoUrl);
+        const videoId = this.getVideoId(videoUrl);
         const response = await axios.get(`https://www.youtube.com/oembed?url=http://www.youtube.com/watch?v=${videoId}&format=json`);
         const videoData = response.data;
         if (!videoData) return;
         return { title: videoData.title, description: videoData.author_name };
     }
 
-    async fetchVideoId(videoUrl) {
+    getVideoId(videoUrl) {
         const videoId = videoUrl.split('v=')[1];
         const ampersandPosition = videoId.indexOf('&');
         if (ampersandPosition !== -1) {

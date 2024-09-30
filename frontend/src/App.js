@@ -1,17 +1,20 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import axios from 'axios';
 import YouTube from 'react-youtube';
+
 import './App.css';
 
-import youtubeService from './services/youtube.service';
+import Header from './components/Header';
 
-const API_URL = process.env.REACT_APP_API_URL;
+import { YoutubeService, ApiService } from './services';
+
+import { PLAYER_STATE } from './constants';
 
 const App = () => {
   const [videos, setVideos] = useState([]);
   const [currentVideo, setCurrentVideo] = useState(null);
   const [newVideo, setNewVideo] = useState({ title: '', description: '', video_id: '' });
   const [loading, setLoading] = useState(false);
+  const [autoplay, setAutoplay] = useState(1);
 
   useEffect(() => {
     async function fetchData() {
@@ -24,9 +27,9 @@ const App = () => {
   }, []);
 
   const fetchVideos = useMemo(() => async () => {
-    const response = await axios.get(API_URL + '/videos/');
-    setVideos(response.data.data);
-    return response.data.data;
+    const response = await ApiService.fetchVideos();
+    setVideos(response);
+    return response;
   }, []);
 
   const handleVideoClick = (video) => {
@@ -36,39 +39,54 @@ const App = () => {
   const handleDeleteVideo = async (videoId) => {
     const confirm = window.confirm('Are you sure you want to delete this video?');
     if (!confirm) return;
-    await axios.delete(`${API_URL}/video/${videoId}/`);
+    await ApiService.deleteVideo(videoId);
     fetchVideos();
   }
   
-  const handleInputChange = (e) => {
+  const handleInputChange = async ({target}) => {
     setLoading(true);
-    const { name, value } = e.target;
+
+    const { name, value } = target;
+
     if (name === 'video_id') {
-      return youtubeService.fetchVideoData(value).then((data) => {
-        if (data) { setNewVideo({ ...newVideo, ...data, video_id: value }); }
-      });
+      if (!value.includes('youtube.com')) {
+        setNewVideo({ ...newVideo, [name]: value });
+        setLoading(false);
+        return;
+      }
+
+      const data = await YoutubeService.fetchVideoData(value);
+      if (data) {
+        setNewVideo({ ...newVideo, ...data, video_id: value });
+      }
+      setLoading(false);
+      
+    } else {
+      setNewVideo({ ...newVideo, [name]: value });
+      setLoading(false);
     }
-    setNewVideo({ ...newVideo, [name]: value });
-    setLoading(false);
   };
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    await axios.post(`${API_URL}/video/`, newVideo);
+    await ApiService.createVideo(newVideo);
     fetchVideos();
     setNewVideo({ title: '', description: '', video_id: '' });
   };
 
   const updateVideoTime = async (videoId, moment) => {
-    await axios.put(`${API_URL}/video/${videoId}/`, { ...currentVideo, moment });
+    await  ApiService.updateVideo(videoId, { ...currentVideo, moment });
    }
   
 
-  const onVideoStateChange = (e) => {
-    const duration = Math.floor(e.target.getDuration());
-    const moment = Math.floor(e.target.getCurrentTime())
+  const onVideoStateChange = ({target}) => {
+    
+    const duration = Math.floor(target.getDuration());
+    const moment = Math.floor(target.getCurrentTime())
+    const playerState = target.getPlayerState();
 
     if(duration === 0) return;
+    if(playerState !== PLAYER_STATE.PLAYING && playerState !== PLAYER_STATE.PAUSED) return;
 
     // Video ended
     if(moment >= (duration-1)) { 
@@ -90,7 +108,7 @@ const App = () => {
     height: '390',
     width: '640',
     playerVars: {
-      autoplay: 1,
+      autoplay,
       start: currentVideo && currentVideo.moment,
       rel: 0,
     },
@@ -98,21 +116,7 @@ const App = () => {
 
   return (
     <div className="App">
-      <div className="header">
-        <div className="content">
-        <h1>Video Playlist App</h1>
-        <label>
-          Autoplay
-          <input
-            type="checkbox"
-            checked={opts.playerVars.autoplay === 1}
-            onChange={(e) => {
-              opts.playerVars.autoplay = e.target.checked ? 1 : 0;
-            }}
-          />
-        </label>
-        </div>
-      </div>
+      <Header autoplay={autoplay} setAutoplay={setAutoplay} />
       <div className="player">
         {currentVideo && (
             <YouTube videoId={currentVideo.video_id} opts={opts} onStateChange={onVideoStateChange} />
