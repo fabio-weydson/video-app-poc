@@ -67,7 +67,7 @@ def create_video(video: VideoCreate, db: Session = Depends(get_db), response: Re
 
     video.title = sanitize_input(video.title)
     video.description = sanitize_input(video.description)
-    video.video_id = sanitize_input(video.video_id)
+    video.video_id = extract_youtube_id(sanitize_input(video.video_id))
 
     required_fields = {
         "title": video.title,
@@ -84,10 +84,14 @@ def create_video(video: VideoCreate, db: Session = Depends(get_db), response: Re
 
 @app.put("/video/{id}", response_model = Optional[VideoResponse])
 def update_video(id: int, video: VideoBase, db: Session = Depends(get_db), response: Response = None):
-    video_exists = VideoRepository.get_video(db, id)
-    if not video_exists:
+    db_video = VideoRepository.get_video(db, id)
+    if not db_video:
         response.status_code = status.HTTP_404_NOT_FOUND
         return {"message": "Video not found", "id": id}
+
+    video.title = sanitize_input(video.title)
+    video.description = sanitize_input(video.description)
+    video.video_id = extract_youtube_id(sanitize_input(video.video_id))
     
     video_updated = VideoRepository.update_video(db, id, video)
 
