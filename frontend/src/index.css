@@ -58,6 +58,7 @@ body {
     padding: 5px 10px;
     font-size: 13px;
     background-color: chocolate;
+    border-radius: 4px;
     color: white;
     border: none;
     cursor: pointer;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
 import YouTube from 'react-youtube';
 import './App.css';
@@ -23,11 +23,11 @@ const App = () => {
     fetchData();
   }, []);
 
-  const fetchVideos = async () => {
-    const response = await axios.get(API_URL+'/videos/');
+  const fetchVideos = useMemo(() => async () => {
+    const response = await axios.get(API_URL + '/videos/');
     setVideos(response.data.data);
     return response.data.data;
-  };
+  }, []);
 
   const handleVideoClick = (video) => {
     setCurrentVideo(video);
@@ -61,12 +61,20 @@ const App = () => {
 
   const updateVideoTime = async (videoId, moment) => {
     await axios.put(`${API_URL}/video/${videoId}/`, { ...currentVideo, moment });
-    fetchVideos();
-  }
+   }
   
 
-  const onStateChange = (e) => {
+  const onVideoStateChange = (e) => {
+    const duration = Math.floor(e.target.getDuration());
     const moment = Math.floor(e.target.getCurrentTime())
+    console.log(moment, duration);
+    if(duration === 0) return;
+    if(moment >= (duration-1)) { 
+      console.log('Video ended');
+      updateVideoTime(currentVideo.id, 0);
+      setCurrentVideo(videos[videos.indexOf(currentVideo) + 1]);
+      return;
+    }
     updateVideoTime(currentVideo.id, moment);
   }
 
@@ -98,7 +106,7 @@ const App = () => {
       </div>
       <div className="player">
         {currentVideo && (
-            <YouTube videoId={currentVideo.video_id} opts={opts} onStateChange={onStateChange} />
+            <YouTube videoId={currentVideo.video_id} opts={opts} onStateChange={onVideoStateChange} />
         )}
       </div>
       <div className="video-list">
