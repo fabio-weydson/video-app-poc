@@ -11,33 +11,35 @@ O aplicativo é construído usando JS (React) e Python (FastAPI) e usa um banco 
 ### Instalação e uso
 
 1. Clone o repositório
-2. Instale as dependências
-    ```bash
-    npm install
-    ```
-3. Inicie o frontend
-    ```bash
-    npm start
-    ```
-4. Instale as dependências do Python
+2. Instale as dependências do back-end
     ```bash
     cd backend
     pip install -r requirements.txt
     ```
-5. Inicialize o banco de dados
+3. Inicialize o banco de dados
     ```bash
     alembic upgrade head
     ```
-6. Inicie o backend
+4. Inicie o backend
     ```bash
     fastapi run
     ```
-7. Abra o aplicativo no seu navegador
-    ```
-    http://localhost:3000
-    ```
-8. Abra a documentação da API
+5. Abra a documentação da API
     ```
     http://localhost:8000/docs
+    ```
+6. Instale as dependências do front-end
+    ```bash
+    cd ..
+    cd frontend
+    npm install
+    ```
+7. Inicie o frontend
+    ```bash
+    npm start
+    ```
+8. Abra o aplicativo no navegador
+    ```
+    http://localhost:3000
     ```
 9. Aproveite!
