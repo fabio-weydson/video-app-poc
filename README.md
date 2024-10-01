@@ -1,53 +1,43 @@
 ## Video Playlist App
+Este é um aplicativo simples de lista de reprodução de vídeos que permite aos usuários adicionar vídeos a uma lista e reproduzi-los em sequência.
+O aplicativo é construído usando JS (React) e Python (FastAPI) e usa um banco de dados SQLite para armazenar os dados da lista de reprodução.
 
-This is a simple video playlist app that allows users to add videos to a playlist and play them in a sequence. 
-The app is built using JS with React and Python FastAPI and uses a SQLite database to store the playlist data.
+### Notas de Lançamento [v1.0.0](release-notes.md)
 
-### Features
-- Add Youtube videos to the playlist
-- Remove videos from the playlist
-- Shuffle the playlist
-- Resume playing the video/playlist from where user left off
-
-#### Coming soon
-- Create multiple playlists
-- Save the playlist to a file
-- Load a playlist from a file
-
-### Requirements
+### Requisitos
 - Node.js
 - Python 3.10+
 
-### Installation and Usage
+### Instalação e uso
 
-1. Clone the repository
-2. Install the dependencies
+1. Clone o repositório
+2. Instale as dependências
     ```bash
     npm install
     ```
-3. Start the frontend
+3. Inicie o frontend
     ```bash
     npm start
     ```
-4. Install the Python dependencies
+4. Instale as dependências do Python
     ```bash
     cd backend
     pip install -r requirements.txt
-
-5. Initialize the database
+    ```
+5. Inicialize o banco de dados
     ```bash
     alembic upgrade head
     ```
-6. Start the backend
+6. Inicie o backend
     ```bash
     fastapi run
     ```
-7. Open the app in your browser
+7. Abra o aplicativo no seu navegador
     ```
     http://localhost:3000
     ```
-8. Open the API documentation
+8. Abra a documentação da API
     ```
     http://localhost:8000/docs
     ```
-9. Enjoy!
+9. Aproveite!
