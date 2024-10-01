@@ -87,12 +87,10 @@ const App = () => {
     <div className="App">
       <Header autoplay={autoplay} setAutoplay={setAutoplay} />
       <div className="player">
-        {currentVideo && (
-            <YouTube videoId={currentVideo.video_id} opts={opts} onStateChange={onVideoStateChange} />
-        )}
+        {!!currentVideo &&  <YouTube videoId={currentVideo.video_id} opts={opts} onStateChange={onVideoStateChange} />}
       </div>
       <div className="video-list">
-        {videos.length && videos.map((video) => (
+        {!!videos && videos.map((video) => (
           <div key={video.id} className={`video-item ${currentVideo && currentVideo.id === video.id ? 'active' : ''}`}>
             <span onClick={() => handleVideoClick(video)}>{video.title}</span>
             <button onClick={() => handleDeleteVideo(video.id)}>X</button>
