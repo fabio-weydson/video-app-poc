@@ -5,7 +5,7 @@ O aplicativo é construído usando JS (React) e Python (FastAPI) e usa um banco 
 ### Notas de Lançamento [v1.0.0](release-notes.md)
 
 ### Requisitos
-- Node.js
+- Node 18+
 - Python 3.10+
 
 ### Instalação e uso
@@ -43,3 +43,8 @@ O aplicativo é construído usando JS (React) e Python (FastAPI) e usa um banco 
     http://localhost:3000
     ```
 9. Aproveite!
+
+
+### Pré-visualização
+
+![Desktop preview](https://github.com/fabio-weydson/video-app-poc/blob/main/desktop-screenshot.png?raw=true)
