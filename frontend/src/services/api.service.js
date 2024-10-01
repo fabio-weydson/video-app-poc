@@ -28,4 +28,5 @@ class ApiService {
     }
 }
 
-export default new ApiService();
+const ApiServicel = new ApiService();
+export default ApiServicel;

@@ -20,6 +20,7 @@ const App = () => {
       }
     }
     fetchData();
+    //eslint-disable-next-line
   }, []);
 
   const fetchVideos = useMemo(() => async () => {
