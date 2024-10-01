@@ -21,13 +21,14 @@ def get_db():
         db.close()
 
 app = FastAPI(
-    title="Video API",
-    description="A simple API to manage videos",
-    version="0.1",
+    title="Video Playist App API",
+    description="A backend API for managing videos playlists",
+    version="1.0.0",
     contact={"name": "Fabio Weydson"},
     license_info={"name": "Open Source"}
 )
 
+#TODO: Move to a config file
 origins = [
     "http://localhost",
     "http://localhost:3000",
