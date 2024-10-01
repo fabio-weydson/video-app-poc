@@ -13,6 +13,7 @@ Este é um aplicativo simples de lista de reprodução de vídeos que permite ao
 
 ### Bugs conhecidos
 - O video somente salva o progresso de reprodução quando o usuário clica no botão de play/pause
+- Autoplay não funciona ao iniciar o aplicativo
 
 ### Novos recursos e melhorias importantes em breve
 - Buscar detalhes dos vídeos da API do Youtube

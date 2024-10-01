@@ -6,3 +6,5 @@
 .vscode
 *.pyc
 .env
+*.db
+*.package-lock.json
